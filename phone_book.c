@@ -65,6 +65,7 @@ int main(int argc, char *argv[]) {
     printf("NOT IMPLEMENTED!\n"); /* TBD  */
     FILE *fp = open_db_file();
     char *name = argv[2];
+    entry *p=load_entries(fp);
     entry *base = p ;
     while(p!=NULL){
       if(strcmp(name,p->name) == 0){
@@ -206,12 +207,14 @@ void add(char *name, char *phone) {
 void list(FILE *db_file) {
   entry *p = load_entries(db_file);
   entry *base = p;
+  int count=0;
   while (p!=NULL) {
     printf("%-20s : %10s\n", p->name, p->phone);
+    count++;
     p=p->next;
   }
   /* TBD print total count */
-  printf(" Totsl entries : %d ",count);
+  printf(" Total entries : %d ",count);
   free_entries(base);
 }
 
