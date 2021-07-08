@@ -36,7 +36,6 @@ void write_all_entries(entry *); /* Given the first node of a linked
                                     database file on the disk and save
                                     the given entries into the file */
 
-
 int main(int argc, char *argv[]) {
   if (argc == 1) {
     print_usage("Insufficient arguments", argv[0]);
@@ -62,11 +61,11 @@ int main(int argc, char *argv[]) {
     fclose(fp);
     exit(0);
   } else if (strcmp(argv[1], "search") == 0) {  /* Handle search */
-    printf("NOT IMPLEMENTED!\n"); /* TBD  */
+       /* TBD  */
     FILE *fp = open_db_file();
-    char *name = argv[2];
+    char *name=argv[2];
     entry *p=load_entries(fp);
-    entry *base = p ;
+    entry *base=p;
     while(p!=NULL){
       if(strcmp(name,p->name) == 0){
         printf("%s",p->phone);
@@ -80,11 +79,9 @@ int main(int argc, char *argv[]) {
       fclose(fp);
       exit(1);
     }
-    
     free_entries(base);
     fclose(fp);
     exit(0);  
-    
   } else if (strcmp(argv[1], "delete") == 0) {  /* Handle delete */
     if (argc != 3) {
       print_usage("Improper arguments for delete", argv[0]);
@@ -115,7 +112,7 @@ FILE *open_db_file() {
 }
   
 void free_entries(entry *p) {
-  /* TBD */
+  /*TBD*/
   entry *q;
   q=p;
   while(p){
@@ -123,7 +120,6 @@ void free_entries(entry *p) {
     p=p->next;
     free(q);
   }
-  printf("Memory is not being freed. This needs to be fixed!\n");  
 }
 
 void print_usage(char *message, char *progname) {
@@ -140,8 +136,7 @@ void print_usage(char *message, char *progname) {
   printf("    Deletes the entry for the name in the database.\n    Prints 'no match' if there's no such name.\n");
 }
 
-entry *
-create_entry_node(char *name, char *phone) {
+entry * create_entry_node(char *name, char *phone) {
   entry *ret;
   ret = malloc(sizeof(entry));
   strcpy(ret->name, name);
@@ -160,20 +155,17 @@ entry *load_entries(FILE *fp) {
   entry *tmp = NULL;
   /* Description of %20[^,\n]
      % is the start of the specifier (like %s, %i etc.)
-
      20 is the maximum number of characters that this will take. We
         know that names and phone numbers will be 20 bytes maximum so
         we limit it to that. %20s will read in 20 character strings
         (including the , to separate the name and phone number. That's
         why we use
-
     [^,\n] Square brackets are used to indicate a set of allowed
            characters [abc] means only a, b, or c. With the ^, it's
            used to specify a set of disallowed characters. So [^abc]
-           means any character *except* a, b, or c. [^,] means any
+           means any character except a, b, or c. [^,] means any
            character except a , [^,\n] means any character except a
            comma(,) or a newline(\n).
-
     %20[^,\n] will match a string of characters with a maximum length
      of 20 characters that doesn't have a comma(,) or a newline(\n).
   */        
@@ -214,7 +206,7 @@ void list(FILE *db_file) {
     p=p->next;
   }
   /* TBD print total count */
-  printf(" Total entries : %d ",count);
+  printf("Total entries :  %d",count);
   free_entries(base);
 }
 
@@ -223,7 +215,7 @@ int delete(FILE *db_file, char *name) {
   entry *p = load_entries(db_file);
   entry *base = p;
   entry *prev = NULL;
-  entry *del = NULL ; /* Node to be deleted */
+  entry* del = NULL ; /* Node to be deleted */
   int deleted = 0;
   while (p!=NULL) {
     if (strcmp(p->name, name) == 0) {
@@ -252,10 +244,12 @@ int delete(FILE *db_file, char *name) {
         deleted++;
         free(del);
       }
+     
     }else{
        prev=p;
        p=p->next;
     }
+   
   }
   write_all_entries(base);
   free_entries(base);
